@@ -12,16 +12,48 @@ author: "Your Name or Organization"
 
 # Container configuration
 containerImage: "your-registry/your-image:tag"  # Docker image to deploy
+# entrypoint: ["/bin/bash", "-c"]        # (Optional) Override container entrypoint
+# command: ["./start.sh"]                # (Optional) Override container command
+# workingDir: "/workspace"               # (Optional) Set working directory
 
 # Resource requirements
 gpu:
   type: "RTX 4090"         # GPU type: RTX 4090, A100, A6000, V100, etc.
   count: 1                 # Number of GPUs required
-  # memoryGB: 24           # Optional: Specific GPU memory requirement
+  # memoryGB: 24           # (Optional) Specific GPU memory requirement
 
 memory: 16                 # System memory in GB (required)
+cpu: 4                     # (Optional) CPU cores (defaults to 1)
 
-# Documentation (required)
+# Networking
+ports:
+  - containerPort: 8080    # Port inside container
+    exposedPort: 8080      # Port to expose (optional, defaults to containerPort)
+    protocol: "tcp"        # Protocol: tcp or udp (defaults to tcp)
+  - containerPort: 7860
+    exposedPort: 7860
+    protocol: "tcp"
+
+# Environment variables
+env:
+  - name: "MODEL_NAME"
+    value: "default-model"
+    required: true         # Mark as required for deployment
+  - name: "API_KEY"
+    value: ""
+    required: false        # Optional variable
+
+# Volume mounts
+volumes:
+  - containerPath: "/data"             # Mount point in container
+    size: 50                           # Size in GB
+    persistent: true                   # Keep data between deployments
+  - containerPath: "/models"
+    size: 100
+    persistent: false
+
+# Documentation
+# (Highly recommended for catalog submission)
 docs:
   description: "Detailed description of your stack"
   usage: |
@@ -29,74 +61,40 @@ docs:
     1. Step one
     2. Step two
     3. Step three
+  examples:
+    - "curl http://localhost:8080/health"
+    - "curl -X POST http://localhost:8080/predict -d '{\"input\": \"data\"}'"
+  troubleshooting: |
+    Common issues:
+    - Issue 1: Solution 1
+    - Issue 2: Solution 2
+  changelog: |
+    v1.0.0: Initial release
 
+# Security settings (optional)
+secure:
+  allowPrivileged: false               # Allow privileged container
+  readOnlyRootFilesystem: false        # Make root filesystem read-only
+  # runAsUser: 1000                    # Run as specific user ID
+  # capabilities:
+  #   add: ["NET_ADMIN"]              # Add capabilities
+  #   drop: ["ALL"]                   # Drop capabilities
 
-# ===== OPTIONAL FIELDS =====
+# Enterprise deployment options (optional)
+secureCloud: false                     # Set to true to require secure cloud
+network: "public"                     # "public" or "private" (required if secureCloud: true)
 
-# Container overrides
-# entrypoint: ["/bin/bash", "-c"]        # Override container entrypoint
-# command: ["./start.sh"]                # Override container command
-# workingDir: "/workspace"               # Set working directory
+# Health check (optional)
+healthcheck:
+  path: "/health"                     # Path to check container readiness
+  timeoutSeconds: 30                   # Max wait for readiness (default: 30)
 
-# Additional resources
-# cpu: 4                                 # CPU cores (defaults to 1)
-
-# Network configuration
-# ports:
-#   - containerPort: 8080                # Port inside container
-#     exposedPort: 8080                  # Port to expose (optional, defaults to containerPort)
-#     protocol: "tcp"                    # Protocol: tcp or udp (defaults to tcp)
-#   - containerPort: 7860
-#     exposedPort: 7860
-#     protocol: "tcp"
-
-# Environment variables
-# env:
-#   - name: "MODEL_NAME"
-#     value: "default-model"
-#     required: true                     # Mark as required for deployment
-#   - name: "API_KEY"
-#     value: ""
-#     required: false                    # Optional variable
-
-# Volume mounts
-# volumes:
-#   - containerPath: "/data"             # Mount point in container
-#     size: 50                           # Size in GB
-#     persistent: true                   # Keep data between deployments
-#   - containerPath: "/models"
-#     size: 100
-#     persistent: false
-
-# Extended documentation
-# docs:
-#   examples:                            # Usage examples
-#     - "curl http://localhost:8080/health"
-#     - "curl -X POST http://localhost:8080/predict -d '{\"input\": \"data\"}'"
-#   troubleshooting: |                   # Common issues and solutions
-#     Common issues:
-#     - Issue 1: Solution 1
-#     - Issue 2: Solution 2
-#   changelog: |                         # Version history
-#     v1.0.0: Initial release
-
-# Security settings
-# secure:
-#   allowPrivileged: false               # Allow privileged container
-#   readOnlyRootFilesystem: false        # Make root filesystem read-only
-#   runAsUser: 1000                      # Run as specific user ID
-#   capabilities:                        # Linux capabilities
-#     add: ["NET_ADMIN"]                 # Add capabilities
-#     drop: ["ALL"]                      # Drop capabilities
-
-# Additional metadata
-# tags:                                  # Tags for categorization
-#   - "ai"
-#   - "machine-learning"
-#   - "pytorch"
-#   - "tensorflow"
-
-# category: "AI/ML"                      # Stack category
-# license: "MIT"                         # License type
-# homepage: "https://your-project.com"   # Project homepage
-# repository: "https://github.com/user/repo"  # Source repository 
+# Additional metadata (optional)
+tags:
+  - "ai"
+  - "machine-learning"
+  - "pytorch"
+category: "AI/ML"                      # Stack category
+license: "MIT"                         # License type
+homepage: "https://your-project.com"    # Project homepage
+repository: "https://github.com/user/repo"  # Source repository 

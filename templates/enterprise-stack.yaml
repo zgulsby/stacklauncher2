@@ -8,11 +8,11 @@ description: "Enterprise-grade AI platform with LLM inference, fine-tuning, and 
 author: "Your Organization"
 
 # Container configuration
-containerImage: "your-registry/ai-platform:v2.1.0"
+containerImage: "your-org/ai-platform:v2.1.0"
 entrypoint: ["/opt/platform/start.sh"]
 workingDir: "/workspace"
 
-# Resource requirements for enterprise workloads
+# High-performance resources
 gpu:
   type: "A100"
   count: 2
@@ -21,7 +21,7 @@ gpu:
 memory: 128
 cpu: 16
 
-# Network configuration
+# Multiple ports for different services
 ports:
   - containerPort: 8080  # API
     exposedPort: 8080
@@ -33,7 +33,7 @@ ports:
     exposedPort: 6006
     protocol: "tcp"
 
-# Environment configuration
+# Comprehensive environment configuration
 env:
   - name: "LICENSE_KEY"
     value: ""
@@ -51,7 +51,7 @@ env:
     value: "INFO"
     required: false
 
-# Volume configuration
+# Persistent storage
 volumes:
   - containerPath: "/data/models"
     size: 500
@@ -63,29 +63,14 @@ volumes:
     size: 50
     persistent: false
 
-# Documentation
-docs:
-  description: "Enterprise AI platform with LLM inference, fine-tuning, and model management capabilities"
-  usage: |
-    1. Set your LICENSE_KEY environment variable
-    2. Configure model cache size as needed
-    3. Access API at http://localhost:8080
-    4. Monitor with TensorBoard at http://localhost:6006
-    5. Health check available at /health
-  examples:
-    - 'curl http://localhost:8080/predict -d "{"prompt": "Hello world"}"'
-    - 'curl http://localhost:8080/health'
-  troubleshooting: |
-    Common issues:
-    - Ensure LICENSE_KEY is set
-    - Check GPU memory requirements
-    - Verify port availability
-    - Monitor health check endpoint
-
-# Enterprise-specific metadata
-logo: "https://your-org.com/logo.png"
-docsUrl: "https://docs.your-org.com/ai-platform"
-maintainer: "Your AI Team"
+# Security settings
+secure:
+  allowPrivileged: false
+  readOnlyRootFilesystem: false
+  runAsUser: 1000
+  capabilities:
+    add: ["SYS_ADMIN"]
+    drop: ["ALL"]
 
 # Enterprise deployment options
 secureCloud: true
@@ -96,14 +81,27 @@ healthcheck:
   path: "/health"
   timeoutSeconds: 60
 
-# Security settings
-secure:
-  allowPrivileged: false
-  readOnlyRootFilesystem: false
-  runAsUser: 1000
-  capabilities:
-    add: ["SYS_ADMIN"]
-    drop: ["ALL"]
+# Documentation
+logo: "https://your-org.com/logo.png"
+docsUrl: "https://docs.your-org.com/ai-platform"
+maintainer: "Your AI Team"
+docs:
+  description: "Enterprise AI platform with LLM inference, fine-tuning, and model management capabilities"
+  usage: |
+    1. Set your LICENSE_KEY environment variable
+    2. Configure model cache size as needed
+    3. Access API at http://localhost:8080
+    4. Monitor with TensorBoard at http://localhost:6006
+    5. Health check available at /health
+  examples:
+    - 'curl http://localhost:8080/predict -d "{\"prompt\": \"Hello world\"}"'
+    - 'curl http://localhost:8080/health'
+  troubleshooting: |
+    Common issues:
+    - Ensure LICENSE_KEY is set
+    - Check GPU memory requirements
+    - Verify port availability
+    - Monitor health check endpoint
 
 # Additional metadata
 tags:

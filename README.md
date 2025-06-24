@@ -516,4 +516,22 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 - Documentation: [docs.runpod.io](https://docs.runpod.io)
 - Community: [discord.gg/runpod](https://discord.gg/runpod)
-- Issues: [GitHub Issues](https://github.com/your-org/stack-launcher-sdk/issues) 
+- Issues: [GitHub Issues](https://github.com/your-org/stack-launcher-sdk/issues)
+
+## Secure Cloud & Networking Options
+
+**secureCloud** and **network** are advanced options for enterprise and security-sensitive deployments:
+
+- `secureCloud: true` — Ensures your pod is only deployed on RunPod's Secure Cloud infrastructure, which offers enhanced isolation and compliance. See [RunPod Secure Cloud requirements](https://docs.runpod.io/hosting/secure-cloud-partner-requirements).
+- `network: "private"` — Restricts pod networking to private, non-publicly routable networks. Required if `secureCloud: true`.
+- `network: "public"` — (Default) Pod is accessible from the public internet (useful for APIs, demos, etc.).
+
+**When to use:**
+- Use `secureCloud: true` and `network: "private"` for production, compliance, or sensitive workloads.
+- Use `network: "public"` for development, testing, or public-facing endpoints.
+
+**Example:**
+```yaml
+secureCloud: true
+network: "private"
+``` 
