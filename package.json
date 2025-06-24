@@ -29,12 +29,13 @@
     "chalk": "^4.1.2",
     "commander": "^10.0.0",
     "dotenv": "^16.3.1",
-    "node-fetch": "^3.3.2",
+    "node-fetch": "^2.7.0",
     "yaml": "^2.3.4",
     "zod": "^3.22.2"
   },
   "devDependencies": {
     "@types/jest": "^29.5.11",
+    "@types/node-fetch": "^2.6.12",
     "eslint": "^8.50.0",
     "execa": "^8.0.1",
     "ts-node": "^10.9.1",
