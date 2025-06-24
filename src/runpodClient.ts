@@ -41,11 +41,11 @@ export class RunPodClient {
 
   constructor(apiKey?: string) {
     this.apiKey = apiKey || process.env.RUNPOD_API_KEY || '';
-    this.baseUrl = `https://api.runpod.io/graphql?api_key=${this.apiKey}`;
-    
     if (!this.apiKey) {
-      throw new Error('RunPod API key is required. Set RUNPOD_API_KEY environment variable.');
+      Logger.error('RunPod API key is required. Set RUNPOD_API_KEY environment variable.');
+      process.exit(2);
     }
+    this.baseUrl = `https://api.runpod.io/graphql?api_key=${this.apiKey}`;
   }
 
   private async makeRequest(query: string, variables?: any): Promise<RunPodApiResponse> {

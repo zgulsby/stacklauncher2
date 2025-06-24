@@ -1,0 +1,12 @@
+id: "test-stack"
+name: "Test Stack"
+version: "1.0.0"
+description: "A valid test stack"
+author: "Test"
+containerImage: "test/image:latest"
+gpu:
+  type: "A100"
+  count: 1
+memory: 16
+docs:
+  description: "Docs" 

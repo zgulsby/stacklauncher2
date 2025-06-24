@@ -16,14 +16,14 @@ interface SubmissionResponse {
 }
 
 export async function submitCommand(options: SubmitOptions): Promise<void> {
-  Logger.header('Submitting Stack to Catalog');
+  Logger.info('Submitting Stack to Catalog');
   
   // Load and validate the stack configuration
   const fileResult = FileLoader.loadYaml(options.file);
   
   if (!fileResult.success) {
     Logger.error(`Failed to load ${options.file}: ${fileResult.error}`);
-    throw new Error('Failed to load stack file');
+    process.exit(1);
   }
 
   const validationResult = validateStack(fileResult.data);
@@ -33,7 +33,7 @@ export async function submitCommand(options: SubmitOptions): Promise<void> {
     validationResult.errors.forEach(error => {
       Logger.error(`  ${error}`);
     });
-    throw new Error('Validation failed - cannot submit invalid stack');
+    process.exit(1);
   }
 
   Logger.success('Stack configuration is valid');
@@ -59,6 +59,7 @@ export async function submitCommand(options: SubmitOptions): Promise<void> {
   Logger.step(`Submitting to: ${endpoint}`);
 
   try {
+    Logger.info('Packaging and submitting stack...');
     const response = await fetch(endpoint, {
       method: 'POST',
       headers: {
@@ -91,10 +92,10 @@ export async function submitCommand(options: SubmitOptions): Promise<void> {
       
       Logger.info('Your stack will be reviewed and published to the catalog if approved.');
       Logger.info('You will receive notification about the review status.');
-      
+      process.exit(0);
     } else {
       Logger.error(`Submission failed: ${result.error || 'Unknown error'}`);
-      throw new Error('Submission failed');
+      process.exit(3);
     }
 
   } catch (error) {
@@ -110,6 +111,6 @@ export async function submitCommand(options: SubmitOptions): Promise<void> {
       Logger.error('Submission failed with unknown error');
     }
     
-    throw error;
+    process.exit(3);
   }
 } 

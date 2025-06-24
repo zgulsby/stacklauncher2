@@ -1,6 +1,56 @@
 # RunPod Stack Launcher SDK
 
-A TypeScript CLI tool for enterprise infrastructure developers to define, validate, test, and submit GPU-based deployment stacks to RunPod's infrastructure catalog. This SDK is inspired by [RunPod's Tetra](https://github.com/runpod/tetra-rp) and provides advanced pod management capabilities.
+[![Build Status](https://img.shields.io/github/workflow/status/zgulsby/stacklauncher2/CI?style=flat-square)](https://github.com/zgulsby/stacklauncher2/actions)
+[![npm version](https://img.shields.io/npm/v/@runpod/stack-launcher-sdk?style=flat-square)](https://www.npmjs.com/package/@runpod/stack-launcher-sdk)
+
+## Purpose
+
+**RunPod Stack Launcher SDK** is an enterprise-grade TypeScript CLI for defining, validating, testing, and submitting GPU-based deployment stacks to RunPod's infrastructure catalog. It is designed for infrastructure and ML engineers at companies like Articul8 to confidently build, validate, and publish production-ready stacks.
+
+## Installation
+
+```bash
+npm install -g @runpod/stack-launcher-sdk
+```
+
+## CLI Usage
+
+```bash
+runpod-stack init my-stack         # Scaffold a new stack folder
+runpod-stack validate              # Validate stack.yaml
+runpod-stack test                  # Deploy a test pod on RunPod
+runpod-stack submit                # Submit stack to RunPod catalog
+```
+
+## stack.yaml Reference
+
+| Field           | Type      | Required | Description                                      |
+|-----------------|-----------|----------|--------------------------------------------------|
+| id              | string    | Yes      | Unique stack ID (lowercase, hyphens)             |
+| name            | string    | Yes      | Human-readable name                              |
+| version         | string    | Yes      | Semantic version (x.y.z)                         |
+| description     | string    | Yes      | Short description                                |
+| author          | string    | Yes      | Author or organization                           |
+| containerImage  | string    | Yes      | Docker image to deploy                           |
+| gpu             | object    | Yes      | GPU requirements (type, count, memoryGB)         |
+| memory          | number    | Yes      | System memory (GB)                               |
+| cpu             | number    | No       | CPU cores                                        |
+| ports           | array     | No       | Port mappings                                    |
+| env             | array     | No       | Environment variables                            |
+| volumes         | array     | No       | Volume mounts                                    |
+| docs            | object    | Yes      | Documentation (usage, examples, troubleshooting)  |
+| secure          | object    | No       | Security settings                                |
+| tags            | array     | No       | Tags for search                                  |
+| category        | string    | No       | Category label                                   |
+| license         | string    | No       | License type                                     |
+| homepage        | string    | No       | Project homepage                                 |
+| repository      | string    | No       | Source repository URL                            |
+
+See [docs/STACK_SCHEMA.md](docs/STACK_SCHEMA.md) for full details.
+
+---
+
+For contributing, coding standards, and test instructions, see [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md).
 
 ## 🚀 Features
 

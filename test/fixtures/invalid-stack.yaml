@@ -1,0 +1,11 @@
+name: "Invalid Stack"
+version: "not-a-semver"
+description: "Missing id and bad version"
+author: "Test"
+containerImage: "test/image:latest"
+gpu:
+  type: "A100"
+  count: 1
+memory: 16
+docs:
+  description: "Docs" 
