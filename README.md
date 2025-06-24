@@ -4,7 +4,7 @@
 
 ## Purpose
 
-**RunPod Stack Launcher SDK** is an enterprise-grade TypeScript CLI for defining, validating, testing, and submitting GPU-based deployment stacks to RunPod's infrastructure catalog. It is designed for infrastructure and ML engineers at companies like Articul8 to confidently build, validate, and publish production-ready stacks.
+**RunPod Stack Launcher SDK** is an enterprise-grade TypeScript CLI for defining, validating, testing, and submitting GPU-based deployment stacks to RunPod's infrastructure catalog. It is designed for infrastructure and ML engineers at companies to confidently build, validate, and publish production-ready stacks.
 
 ## Installation
 
