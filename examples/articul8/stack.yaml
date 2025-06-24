@@ -1,0 +1,136 @@
+# Articul8 AI Enterprise Platform Stack
+# Production-ready AI platform for enterprise workloads
+
+id: "articul8-ai-platform"
+name: "Articul8 AI Platform"
+version: "2.1.0"
+description: "Enterprise-grade AI platform with LLM inference, fine-tuning, and model management capabilities"
+author: "Articul8 AI"
+
+# Container configuration
+containerImage: "articul8/ai-platform:v2.1.0"
+entrypoint: ["/opt/articul8/start.sh"]
+workingDir: "/workspace"
+
+# Resource requirements for enterprise workloads
+gpu:
+  type: "A100"
+  count: 2
+  memoryGB: 80
+
+memory: 128
+cpu: 16
+
+# Network configuration
+ports:
+  - containerPort: 8080
+    exposedPort: 8080
+    protocol: "tcp"
+  - containerPort: 8443
+    exposedPort: 8443
+    protocol: "tcp"
+  - containerPort: 6006
+    exposedPort: 6006
+    protocol: "tcp"
+
+# Environment configuration
+env:
+  - name: "ARTICUL8_LICENSE_KEY"
+    value: ""
+    required: true
+  - name: "MODEL_CACHE_SIZE"
+    value: "50GB"
+    required: false
+  - name: "MAX_CONCURRENT_REQUESTS"
+    value: "100"
+    required: false
+  - name: "ENABLE_FINE_TUNING"
+    value: "true"
+    required: false
+  - name: "LOG_LEVEL"
+    value: "INFO"
+    required: false
+
+# Volume configuration
+volumes:
+  - containerPath: "/data/models"
+    size: 500
+    persistent: true
+  - containerPath: "/data/datasets"
+    size: 200
+    persistent: true
+  - containerPath: "/logs"
+    size: 50
+    persistent: false
+
+# Documentation
+docs:
+  description: |
+    Articul8 AI Platform provides a comprehensive enterprise AI solution with:
+    - Large Language Model (LLM) inference and serving
+    - Model fine-tuning and customization
+    - Enterprise security and compliance features
+    - Model version management and deployment
+    - Real-time inference APIs
+    - Web-based management interface
+  
+  usage: |
+    1. Set your ARTICUL8_LICENSE_KEY environment variable
+    2. Deploy the stack and wait for initialization
+    3. Access the web interface at https://your-pod-ip:8443
+    4. Use the API endpoints at https://your-pod-ip:8080
+    5. Monitor training with TensorBoard at http://your-pod-ip:6006
+    
+    API Endpoints:
+    - POST /api/v1/inference - Submit inference requests
+    - GET /api/v1/models - List available models
+    - POST /api/v1/finetune - Start fine-tuning job
+    - GET /api/v1/jobs - Monitor training jobs
+  
+  examples:
+    - "curl -X POST https://your-pod:8080/api/v1/inference -H 'Content-Type: application/json' -d '{\"model\": \"llama-2-70b\", \"prompt\": \"Explain quantum computing\", \"max_tokens\": 500}'"
+    - "curl https://your-pod:8080/api/v1/models"
+    - "curl -X POST https://your-pod:8080/api/v1/finetune -H 'Content-Type: application/json' -d '{\"base_model\": \"llama-2-7b\", \"dataset\": \"/data/datasets/custom.jsonl\", \"epochs\": 3}'"
+  
+  troubleshooting: |
+    Common issues and solutions:
+    
+    1. License key not working:
+       - Ensure ARTICUL8_LICENSE_KEY is set correctly
+       - Check license validity and expiration
+       - Contact Articul8 support for license issues
+    
+    2. Out of memory errors:
+       - Reduce MAX_CONCURRENT_REQUESTS
+       - Increase GPU memory allocation
+       - Use smaller model variants
+    
+    3. Slow inference:
+       - Check GPU utilization in monitoring
+       - Ensure model is properly loaded in GPU memory
+       - Consider model quantization options
+    
+    4. Fine-tuning failures:
+       - Verify dataset format (JSONL with prompt/completion pairs)
+       - Check available disk space for model checkpoints
+       - Monitor training logs for specific error messages
+
+# Security configuration
+secure:
+  allowPrivileged: false
+  readOnlyRootFilesystem: false
+  runAsUser: 1000
+
+# Metadata
+tags:
+  - "ai"
+  - "llm"
+  - "enterprise"
+  - "inference"
+  - "fine-tuning"
+  - "articul8"
+
+category: "AI/ML"
+license: "Commercial"
+homepage: "https://articul8.ai"
+repository: "https://github.com/articul8-ai/platform-examples" 

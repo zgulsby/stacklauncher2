@@ -1,0 +1,72 @@
+{
+  "rules": [
+    {
+      "pattern": "src/cli.ts",
+      "description": "Main CLI entrypoint using Commander. Parses CLI arguments and routes to corresponding command handlers like `validate`, `test`, and `submit`."
+    },
+    {
+      "pattern": "src/schema.ts",
+      "description": "Zod-based schema definition for the stack.yaml file. Ensures partner-defined stacks meet expected structure: metadata, GPU, containerImage, env, ports, docs, etc."
+    },
+    {
+      "pattern": "src/validate.ts",
+      "description": "Implements the `validate` CLI command. Parses stack.yaml, applies schema from schema.ts, and logs results. Also handles field presence, formats, and edge-case checks."
+    },
+    {
+      "pattern": "src/test.ts",
+      "description": "Implements the `test` CLI command. Reads stack.yaml and uses RunPod API to deploy a GPU pod for the stack. Waits for readiness and outputs deployment info or logs errors."
+    },
+    {
+      "pattern": "src/submit.ts",
+      "description": "Implements the `submit` CLI command. Packages the validated stack.yaml and POSTs it to the Stack Launcher backend for review or publication."
+    },
+    {
+      "pattern": "src/init.ts",
+      "description": "Optional. Implements `init` command to scaffold a new stack folder with a default stack.yaml and supporting files."
+    },
+    {
+      "pattern": "src/runpodClient.ts",
+      "description": "RunPod API utility wrapper. Contains logic for launching pods, checking status, and managing pod lifecycle. Based on logic reused or adapted from Tetra."
+    },
+    {
+      "pattern": "src/utils/.*\\.ts",
+      "description": "Generic utility functions. Examples: environment validation, file loaders, schema transformers, log formatters."
+    },
+    {
+      "pattern": "templates/.*\\.yaml",
+      "description": "Example stack definitions from partners like Articul8, Predibase, or LangChain. Used for testing SDK commands and validating real-world inputs."
+    },
+    {
+      "pattern": "examples/.*",
+      "description": "Optional. Full example folders for testing CLI workflows, including sample Dockerfiles, run.sh scripts, and config-driven deployments."
+    },
+    {
+      "pattern": ".runpod/.*",
+      "description": "Internal SDK state, cache, logs, or secrets. This folder should be ignored by git and stores temporary launch data for test pods."
+    },
+    {
+      "pattern": "test/.*",
+      "description": "SDK unit and integration tests for CLI commands and API interactions. Use Jest or Vitest to validate CLI behavior end-to-end."
+    },
+    {
+      "pattern": "src/uiSchema/.*\\.ts",
+      "description": "Optional. JSON-schema or form schema definitions for partner stacks that support custom user inputs. Can be used later to auto-generate form UIs in the web launcher."
+    },
+    {
+      "pattern": "docs/.*",
+      "description": "Developer-facing documentation for using the SDK, writing stack.yaml configs, and testing submissions."
+    },
+    {
+      "pattern": "README.md",
+      "description": "Primary documentation for the SDK. Should explain purpose, install instructions, CLI usage, and integration flow for partner developers."
+    },
+    {
+      "pattern": "package.json",
+      "description": "Defines CLI entrypoints, scripts, dependencies. Important for building and publishing the SDK as an installable CLI tool via npm."
+    },
+    {
+      "pattern": ".env",
+      "description": "Environment variables used for RunPod API keys and local dev. Should include `RUNPOD_API_KEY` and be ignored by Git."
+    }
+  ]
+} 

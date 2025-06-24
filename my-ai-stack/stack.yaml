@@ -1,0 +1,84 @@
+# RunPod Stack Configuration
+# This file defines your GPU-based deployment stack for the RunPod Infrastructure Catalog
+
+# Basic metadata
+id: "my-ai-stack"
+name: "my-ai-stack"
+version: "1.0.0"
+description: "A sample AI/ML stack for RunPod deployment"
+author: "Your Name"
+
+# Container configuration
+containerImage: "your-registry/your-image:latest"
+# entrypoint: ["/bin/bash"]  # Optional: Override container entrypoint
+# command: ["./run.sh"]      # Optional: Override container command
+# workingDir: "/workspace"   # Optional: Set working directory
+
+# Resource requirements
+gpu:
+  type: "RTX 4090"    # GPU type (RTX 4090, A100, A6000, etc.)
+  count: 1            # Number of GPUs
+  # memoryGB: 24      # Optional: Specific GPU memory requirement
+
+memory: 16            # System memory in GB
+cpu: 4               # Optional: CPU cores (defaults to 1)
+
+# Network configuration (optional)
+ports:
+  - containerPort: 8080
+    exposedPort: 8080
+    protocol: "tcp"
+  - containerPort: 7860
+    exposedPort: 7860
+    protocol: "tcp"
+
+# Environment variables (optional)
+env:
+  - name: "MODEL_NAME"
+    value: "llama-2-7b"
+    required: true
+  - name: "API_KEY"
+    value: "your-api-key"
+    required: false
+
+# Volume mounts (optional)
+volumes:
+  - containerPath: "/data"
+    size: 50          # Size in GB
+    persistent: true  # Keep data between deployments
+
+# Documentation
+docs:
+  description: "This stack provides a ready-to-use environment for running AI/ML workloads"
+  usage: |
+    1. Update the containerImage to point to your Docker image
+    2. Configure environment variables as needed
+    3. Adjust resource requirements
+    4. Test with: runpod-stack test
+    5. Submit with: runpod-stack submit
+  examples:
+    - 'curl http://localhost:8080/predict -d "{"prompt": "Hello world"}"'
+  troubleshooting: |
+    Common issues:
+    - Ensure your container image is publicly accessible
+    - Check that all required environment variables are set
+    - Verify GPU requirements match available hardware
+
+# Security settings (optional)
+secure:
+  allowPrivileged: false
+  readOnlyRootFilesystem: false
+  # runAsUser: 1000
+  # capabilities:
+  #   add: ["SYS_ADMIN"]
+  #   drop: ["ALL"]
+
+# Additional metadata (optional)
+tags:
+  - "ai"
+  - "machine-learning"
+  - "pytorch"
+category: "AI/ML"
+license: "MIT"
+homepage: "https://your-project.com"
+repository: "https://github.com/your-username/your-repo"

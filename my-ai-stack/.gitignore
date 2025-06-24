@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+*.log
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# RunPod local state
+.runpod/
+
+# Build artifacts
+dist/
+build/
