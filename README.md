@@ -1,5 +1,4 @@
 [![build](https://github.com/zgulsby/stacklauncher2/actions/workflows/ci.yml/badge.svg)](https://github.com/zgulsby/stacklauncher2/actions)
-[![npm version](https://img.shields.io/npm/v/@runpod/stack-launcher-sdk.svg)](https://www.npmjs.com/package/@runpod/stack-launcher-sdk)
 
 # RunPod Stack Launcher SDK
 
