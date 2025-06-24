@@ -31,6 +31,15 @@ export async function testCommand(options: { file: string; dryRun?: boolean }): 
     process.exit(0);
   }
 
+  // Skip live testing in CI
+  if (process.env.CI === 'true') {
+    Logger.info('Skipping live test: running in CI mode');
+    Logger.info(`Stack: ${stack.name} (${stack.id})`);
+    Logger.info(`Image: ${stack.containerImage}`);
+    Logger.info('Deployment mode: CI/SKIP');
+    process.exit(0);
+  }
+
   // Warn and log deployment mode
   let deploymentMode = 'COMMUNITY/PUBLIC';
   if ((stack.secureCloud === true) || (stack.network === 'private')) {

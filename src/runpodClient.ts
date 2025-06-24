@@ -42,8 +42,7 @@ export class RunPodClient {
   constructor(apiKey?: string) {
     this.apiKey = apiKey || process.env.RUNPOD_API_KEY || '';
     if (!this.apiKey) {
-      Logger.error('RunPod API key is required. Set RUNPOD_API_KEY environment variable.');
-      process.exit(2);
+      throw new Error('Missing RUNPOD_API_KEY. Please set this in a .env file.');
     }
     this.baseUrl = `https://api.runpod.io/graphql?api_key=${this.apiKey}`;
   }

@@ -10,7 +10,7 @@
   "scripts": {
     "build": "tsc",
     "dev": "ts-node src/cli.ts",
-    "test": "vitest run",
+    "test": "CI=true vitest run",
     "lint": "eslint 'src/**/*.ts'",
     "prepare": "npm run build",
     "start": "node dist/cli.js"
