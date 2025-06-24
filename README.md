@@ -1,7 +1,7 @@
-# RunPod Stack Launcher SDK
+[![build](https://github.com/zgulsby/stacklauncher2/actions/workflows/ci.yml/badge.svg)](https://github.com/zgulsby/stacklauncher2/actions)
+[![npm version](https://img.shields.io/npm/v/@runpod/stack-launcher-sdk.svg)](https://www.npmjs.com/package/@runpod/stack-launcher-sdk)
 
-[![Build Status](https://img.shields.io/github/workflow/status/zgulsby/stacklauncher2/CI?style=flat-square)](https://github.com/zgulsby/stacklauncher2/actions)
-[![npm version](https://img.shields.io/npm/v/@runpod/stack-launcher-sdk?style=flat-square)](https://www.npmjs.com/package/@runpod/stack-launcher-sdk)
+# RunPod Stack Launcher SDK
 
 ## Purpose
 
