@@ -3,12 +3,13 @@
 import { Command } from 'commander';
 import chalk from 'chalk';
 import dotenv from 'dotenv';
-import { validateCommand } from './validate.js';
-import { testCommand } from './test.js';
-import { submitCommand } from './submit.js';
-import { initCommand } from './init.js';
-import { launchCommand } from './launch.js';
-import { terminateCommand } from './terminate.js';
+import { validateCommand } from './validate';
+import { testCommand } from './test';
+import { submitCommand } from './submit';
+import { initCommand } from './init';
+import { launchCommand } from './launch';
+import { terminateCommand } from './terminate';
+import { envListCommand } from './env';
 
 // Load environment variables
 dotenv.config();
@@ -100,6 +101,19 @@ program
   .action(async (podId: string) => {
     try {
       await terminateCommand({ podId });
+    } catch (error) {
+      console.error(chalk.red('Error:'), error instanceof Error ? error.message : 'Unknown error');
+      process.exit(1);
+    }
+  });
+
+program
+  .command('env:list')
+  .description('List environment variables defined in the stack configuration')
+  .option('-f, --file <file>', 'Path to stack.yaml file', './stack.yaml')
+  .action(async (options: { file: string }) => {
+    try {
+      await envListCommand(options);
     } catch (error) {
       console.error(chalk.red('Error:'), error instanceof Error ? error.message : 'Unknown error');
       process.exit(1);

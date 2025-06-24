@@ -1,5 +1,5 @@
-import { RunPodClient } from './runpodClient.js';
-import { Logger } from './utils/logger.js';
+import { RunPodClient } from './runpodClient';
+import { Logger } from './utils/logger';
 
 export interface TerminateOptions {
   podId: string;

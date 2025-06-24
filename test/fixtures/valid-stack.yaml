@@ -9,4 +9,9 @@ gpu:
   count: 1
 memory: 16
 docs:
-  description: "Docs" 
+  description: "Docs"
+logo: "https://example.com/logo.png"
+maintainer: "Test Organization"
+healthcheck:
+  path: "/health"
+  timeoutSeconds: 30 

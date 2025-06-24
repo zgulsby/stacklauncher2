@@ -1,7 +1,7 @@
-import { RunPodClient } from './runpodClient.js';
-import { Logger } from './utils/logger.js';
-import { GpuMapper } from './utils/gpuMapper.js';
-import { PREDEFINED_CONFIGS, createResourceConfig } from './utils/resourceConfig.js';
+import { RunPodClient } from './runpodClient';
+import { Logger } from './utils/logger';
+import { GpuMapper } from './utils/gpuMapper';
+import { PREDEFINED_CONFIGS, createResourceConfig } from './utils/resourceConfig';
 
 export interface LaunchOptions {
   image: string;

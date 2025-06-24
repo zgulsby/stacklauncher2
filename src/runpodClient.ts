@@ -1,8 +1,8 @@
 import fetch from 'node-fetch';
-import { StackConfig } from './schema.js';
-import { Logger } from './utils/logger.js';
-import { GpuMapper } from './utils/gpuMapper.js';
-import { ResourceConfig, createResourceConfig, PREDEFINED_CONFIGS } from './utils/resourceConfig.js';
+import { StackConfig } from './schema';
+import { Logger } from './utils/logger';
+import { GpuMapper } from './utils/gpuMapper';
+import { ResourceConfig, createResourceConfig, PREDEFINED_CONFIGS } from './utils/resourceConfig';
 
 interface RunPodApiResponse<T = any> {
   id?: string;
@@ -86,6 +86,15 @@ export class RunPodClient {
       throw new Error(`GPU validation failed: ${gpuValidation.errors.join(', ')}`);
     }
 
+    // Determine cloudType
+    let cloudType = 'ALL';
+    let deploymentMode = 'COMMUNITY/PUBLIC';
+    if ((stack.secureCloud === true) || (stack.network === 'private')) {
+      cloudType = 'SECURE';
+      deploymentMode = 'SECURE/PRIVATE';
+    }
+    Logger.info(`Deployment mode: ${deploymentMode}`);
+
     const podSpec: PodSpec = {
       name: testName || `test-${stack.id}-${Date.now()}`,
       imageName: stack.containerImage,
@@ -122,7 +131,7 @@ export class RunPodClient {
     const launchMutation = `
       mutation {
         podFindAndDeployOnDemand(input: {
-          cloudType: ALL,
+          cloudType: ${cloudType},
           gpuCount: ${podSpec.gpuCount},
           gpuTypeId: "${podSpec.gpuTypeId}",
           name: "${podSpec.name}",

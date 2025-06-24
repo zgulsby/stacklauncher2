@@ -1,4 +1,4 @@
-import { GpuPool } from './resourceConfig.js';
+import { PREDEFINED_CONFIGS, createResourceConfig, GpuPool } from './resourceConfig';
 
 // GPU type mapping based on RunPod's GPU types
 export interface GpuTypeInfo {

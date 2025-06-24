@@ -1,0 +1,118 @@
+# Enterprise Stack Template
+# This template showcases all enterprise-specific features for production deployments
+
+id: "enterprise-ai-platform"
+name: "Enterprise AI Platform"
+version: "2.1.0"
+description: "Enterprise-grade AI platform with LLM inference, fine-tuning, and model management"
+author: "Your Organization"
+
+# Container configuration
+containerImage: "your-registry/ai-platform:v2.1.0"
+entrypoint: ["/opt/platform/start.sh"]
+workingDir: "/workspace"
+
+# Resource requirements for enterprise workloads
+gpu:
+  type: "A100"
+  count: 2
+  memoryGB: 80
+
+memory: 128
+cpu: 16
+
+# Network configuration
+ports:
+  - containerPort: 8080  # API
+    exposedPort: 8080
+    protocol: "tcp"
+  - containerPort: 8443  # HTTPS
+    exposedPort: 8443
+    protocol: "tcp"
+  - containerPort: 6006  # TensorBoard
+    exposedPort: 6006
+    protocol: "tcp"
+
+# Environment configuration
+env:
+  - name: "LICENSE_KEY"
+    value: ""
+    required: true
+  - name: "MODEL_CACHE_SIZE"
+    value: "50GB"
+    required: false
+  - name: "MAX_CONCURRENT_REQUESTS"
+    value: "100"
+    required: false
+  - name: "ENABLE_FINE_TUNING"
+    value: "true"
+    required: false
+  - name: "LOG_LEVEL"
+    value: "INFO"
+    required: false
+
+# Volume configuration
+volumes:
+  - containerPath: "/data/models"
+    size: 500
+    persistent: true
+  - containerPath: "/data/datasets"
+    size: 200
+    persistent: true
+  - containerPath: "/logs"
+    size: 50
+    persistent: false
+
+# Documentation
+docs:
+  description: "Enterprise AI platform with LLM inference, fine-tuning, and model management capabilities"
+  usage: |
+    1. Set your LICENSE_KEY environment variable
+    2. Configure model cache size as needed
+    3. Access API at http://localhost:8080
+    4. Monitor with TensorBoard at http://localhost:6006
+    5. Health check available at /health
+  examples:
+    - 'curl http://localhost:8080/predict -d "{"prompt": "Hello world"}"'
+    - 'curl http://localhost:8080/health'
+  troubleshooting: |
+    Common issues:
+    - Ensure LICENSE_KEY is set
+    - Check GPU memory requirements
+    - Verify port availability
+    - Monitor health check endpoint
+
+# Enterprise-specific metadata
+logo: "https://your-org.com/logo.png"
+docsUrl: "https://docs.your-org.com/ai-platform"
+maintainer: "Your AI Team"
+
+# Enterprise deployment options
+secureCloud: true
+network: "private"
+
+# Health check configuration
+healthcheck:
+  path: "/health"
+  timeoutSeconds: 60
+
+# Security settings
+secure:
+  allowPrivileged: false
+  readOnlyRootFilesystem: false
+  runAsUser: 1000
+  capabilities:
+    add: ["SYS_ADMIN"]
+    drop: ["ALL"]
+
+# Additional metadata
+tags:
+  - "ai"
+  - "enterprise"
+  - "llm"
+  - "fine-tuning"
+  - "production"
+category: "AI/ML"
+license: "Commercial"
+homepage: "https://your-org.com/ai-platform"
+repository: "https://github.com/your-org/ai-platform" 

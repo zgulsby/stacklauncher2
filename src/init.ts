@@ -1,6 +1,6 @@
 import { mkdirSync, writeFileSync, existsSync } from 'fs';
 import { join } from 'path';
-import { Logger } from './utils/logger.js';
+import { Logger } from './utils/logger';
 
 export interface InitOptions {
   directory: string;

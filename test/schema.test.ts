@@ -29,6 +29,33 @@ const badVersion = {
   version: 'not-a-semver',
 };
 
+const enterpriseConfig = {
+  ...validConfig,
+  logo: 'https://example.com/logo.png',
+  docsUrl: 'https://docs.example.com',
+  maintainer: 'Enterprise Corp',
+  secureCloud: true,
+  network: 'private',
+  healthcheck: {
+    path: '/health',
+    timeoutSeconds: 60,
+  },
+};
+
+const invalidSecureCloud = {
+  ...validConfig,
+  secureCloud: true,
+  // Missing network - should fail validation
+};
+
+const invalidHealthcheck = {
+  ...validConfig,
+  healthcheck: {
+    path: '/health',
+    timeoutSeconds: 400, // Exceeds max of 300
+  },
+};
+
 describe('StackSchema', () => {
   it('accepts a valid config', () => {
     expect(() => StackSchema.parse(validConfig)).not.toThrow();
@@ -40,5 +67,25 @@ describe('StackSchema', () => {
 
   it('rejects bad version format', () => {
     expect(() => StackSchema.parse(badVersion)).toThrow();
+  });
+
+  it('accepts enterprise-specific fields', () => {
+    expect(() => StackSchema.parse(enterpriseConfig)).not.toThrow();
+  });
+
+  it('rejects secureCloud=true without network', () => {
+    expect(() => StackSchema.parse(invalidSecureCloud)).toThrow();
+  });
+
+  it('rejects invalid healthcheck timeout', () => {
+    expect(() => StackSchema.parse(invalidHealthcheck)).toThrow();
+  });
+
+  it('validates URL fields', () => {
+    const invalidLogo = {
+      ...validConfig,
+      logo: 'not-a-url',
+    };
+    expect(() => StackSchema.parse(invalidLogo)).toThrow();
   });
 }); 

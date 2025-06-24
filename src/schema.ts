@@ -28,6 +28,12 @@ const VolumeSchema = z.object({
   persistent: z.boolean().default(false),
 });
 
+// Health check schema
+const HealthCheckSchema = z.object({
+  path: z.string().min(1), // URL path to check container readiness
+  timeoutSeconds: z.number().int().min(1).max(300).default(30), // max wait for readiness
+});
+
 // Documentation schema
 const DocsSchema = z.object({
   description: z.string().min(1),
@@ -81,12 +87,33 @@ export const StackSchema = z.object({
   // Security settings
   secure: SecuritySchema.optional(),
   
+  // Enterprise-specific metadata
+  logo: z.string().url().optional(), // public image URL
+  docsUrl: z.string().url().optional(), // documentation URL
+  maintainer: z.string().min(1).optional(), // org or user who maintains the stack
+  
+  // Enterprise deployment options
+  secureCloud: z.boolean().default(false), // whether the pod must run in secure cloud
+  network: z.enum(['public', 'private']).optional(), // required if secureCloud is true
+  
+  // Health check configuration
+  healthcheck: HealthCheckSchema.optional(),
+  
   // Additional metadata
   tags: z.array(z.string()).optional(),
   category: z.string().optional(),
   license: z.string().optional(),
   homepage: z.string().url().optional(),
   repository: z.string().url().optional(),
+}).refine((data) => {
+  // If secureCloud is true, network must be specified
+  if (data.secureCloud && !data.network) {
+    return false;
+  }
+  return true;
+}, {
+  message: "Network type must be specified when secureCloud is true",
+  path: ["network"]
 });
 
 export type StackConfig = z.infer<typeof StackSchema>;

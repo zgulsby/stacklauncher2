@@ -1,7 +1,9 @@
 import fetch from 'node-fetch';
-import { validateStack } from './schema.js';
-import { FileLoader } from './utils/fileLoader.js';
-import { Logger } from './utils/logger.js';
+import { validateStack } from './schema';
+import { FileLoader } from './utils/fileLoader';
+import { Logger } from './utils/logger';
+import { existsSync, readFileSync } from 'fs';
+import readline from 'readline';
 
 export interface SubmitOptions {
   file: string;
@@ -38,9 +40,44 @@ export async function submitCommand(options: SubmitOptions): Promise<void> {
 
   Logger.success('Stack configuration is valid');
   
+  // Check for test result
+  const testResultPath = '.runpod/test_result.json';
+  let testResultExists = false;
+  try {
+    testResultExists = existsSync(testResultPath);
+  } catch {}
+
+  if (!testResultExists) {
+    Logger.warning('No test result found. It is recommended to run `runpod-stack test` before submitting.');
+    const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+    const answer = await new Promise<string>(resolve => {
+      rl.question('Are you sure you want to submit without testing? (y/N): ', resolve);
+    });
+    rl.close();
+    if (answer.trim().toLowerCase() !== 'y') {
+      Logger.info('Submission cancelled. Please run `runpod-stack test` first.');
+      process.exit(1);
+    }
+  }
+
   const stack = validationResult.data;
-  Logger.info(`Preparing to submit: ${stack.name} (${stack.id}) v${stack.version}`);
-  
+
+  // Extract metadata fields
+  const stackMeta = {
+    name: stack.name,
+    id: stack.id,
+    docs: stack.docs?.usage || stack.docs?.description || '',
+    logo: stack.logo || '',
+    maintainer: stack.maintainer || '',
+  };
+
+  // Dry-run preview
+  Logger.header('Submitting stack:');
+  Logger.info(`- Name: ${stackMeta.name}`);
+  Logger.info(`- Maintainer: ${stackMeta.maintainer}`);
+  Logger.info(`- Docs: ${stack.docsUrl || stackMeta.docs}`);
+  Logger.info(`- Logo: ${stackMeta.logo}`);
+
   // Prepare submission payload
   const payload = {
     stack,
@@ -48,6 +85,7 @@ export async function submitCommand(options: SubmitOptions): Promise<void> {
       submittedAt: new Date().toISOString(),
       sdkVersion: '1.0.0',
       source: options.file,
+      ...stackMeta,
     },
   };
 

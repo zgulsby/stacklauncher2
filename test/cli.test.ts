@@ -6,6 +6,7 @@ import path from 'path';
 const CLI = path.resolve(__dirname, '../dist/cli.js');
 const VALID_STACK = path.resolve(__dirname, './fixtures/valid-stack.yaml');
 const INVALID_STACK = path.resolve(__dirname, './fixtures/invalid-stack.yaml');
+const ENTERPRISE_STACK = path.resolve(__dirname, './fixtures/enterprise-stack.yaml');
 
 describe('CLI validate', () => {
   it('returns 0 for valid stack', async () => {
@@ -16,5 +17,10 @@ describe('CLI validate', () => {
   it('returns 1 for invalid stack', async () => {
     const { exitCode } = await execa('node', [CLI, 'validate', '-f', INVALID_STACK], { reject: false });
     expect(exitCode).toBe(1);
+  });
+
+  it('returns 0 for enterprise stack with all new fields', async () => {
+    const { exitCode } = await execa('node', [CLI, 'validate', '-f', ENTERPRISE_STACK]);
+    expect(exitCode).toBe(0);
   });
 }); 

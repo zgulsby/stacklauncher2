@@ -2,30 +2,36 @@
 
 This document describes every field supported in a RunPod stack.yaml, including type, required/optional, and usage notes.
 
-| Field           | Type      | Required | Description |
-|-----------------|-----------|----------|-------------|
-| id              | string    | Yes      | Unique stack ID (lowercase, hyphens only) |
-| name            | string    | Yes      | Human-readable name |
-| version         | string    | Yes      | Semantic version (x.y.z) |
-| description     | string    | Yes      | Short description of the stack |
-| author          | string    | Yes      | Author or organization |
-| containerImage  | string    | Yes      | Docker image to deploy |
+| Field           | Type      | Required | Description                                      |
+|-----------------|-----------|----------|--------------------------------------------------|
+| id              | string    | Yes      | Unique stack ID (lowercase, hyphens only)        |
+| name            | string    | Yes      | Human-readable name                              |
+| version         | string    | Yes      | Semantic version (x.y.z)                         |
+| description     | string    | Yes      | Short description of the stack                   |
+| author          | string    | Yes      | Author or organization                           |
+| containerImage  | string    | Yes      | Docker image to deploy                           |
 | entrypoint      | array     | No       | Override container entrypoint (e.g. ["/bin/bash"]) |
-| command         | array     | No       | Override container command (e.g. ["./run.sh"]) |
-| workingDir      | string    | No       | Working directory inside container |
-| gpu             | object    | Yes      | GPU requirements (see below) |
-| memory          | number    | Yes      | System memory in GB |
-| cpu             | number    | No       | CPU cores (default: 1) |
-| ports           | array     | No       | Port mappings (see below) |
-| env             | array     | No       | Environment variables (see below) |
-| volumes         | array     | No       | Volume mounts (see below) |
-| docs            | object    | Yes      | Documentation (see below) |
-| secure          | object    | No       | Security settings (see below) |
-| tags            | array     | No       | Tags for search/discovery |
-| category        | string    | No       | Category label |
-| license         | string    | No       | License type (e.g. MIT) |
-| homepage        | string    | No       | Project homepage URL |
-| repository      | string    | No       | Source repository URL |
+| command         | array     | No       | Override container command (e.g. ["./run.sh"])   |
+| workingDir      | string    | No       | Working directory inside container               |
+| gpu             | object    | Yes      | GPU requirements (see below)                     |
+| memory          | number    | Yes      | System memory in GB                              |
+| cpu             | number    | No       | CPU cores (default: 1)                           |
+| ports           | array     | No       | Port mappings (see below)                        |
+| env             | array     | No       | Environment variables (see below)                |
+| volumes         | array     | No       | Volume mounts (see below)                        |
+| docs            | object    | Yes      | Documentation (see below)                        |
+| secure          | object    | No       | Security settings (see below)                    |
+| logo            | string    | No       | Public image URL for stack logo                  |
+| docsUrl         | string    | No       | Documentation URL                                |
+| maintainer      | string    | No       | Organization or user who maintains the stack     |
+| secureCloud     | boolean   | No       | Whether pod must run in secure cloud (default: false) |
+| network         | string    | No       | Network type: "public" or "private" (required if secureCloud: true) |
+| healthcheck     | object    | No       | Health check configuration (see below)           |
+| tags            | array     | No       | Tags for search/discovery                        |
+| category        | string    | No       | Category label                                   |
+| license         | string    | No       | License type (e.g. MIT)                          |
+| homepage        | string    | No       | Project homepage URL                             |
+| repository      | string    | No       | Source repository URL                            |
 
 ## Nested Objects
 
@@ -73,6 +79,18 @@ This document describes every field supported in a RunPod stack.yaml, including 
 | readOnlyRootFilesystem| bool      | No       | Enforce read-only root FS |
 | runAsUser             | number    | No       | Run as user ID |
 | capabilities          | object    | No       | Linux capabilities (add/drop) |
+
+### healthcheck
+| Field           | Type    | Required | Description |
+|-----------------|---------|----------|-------------|
+| path            | string  | Yes      | URL path to check container readiness |
+| timeoutSeconds  | number  | No       | Max wait for readiness (1-300, default: 30) |
+
+## Validation Rules
+
+- **secureCloud**: If `secureCloud: true`, then `network` must be specified
+- **URL fields**: `logo`, `docsUrl`, `homepage`, `repository` must be valid URLs
+- **healthcheck.timeoutSeconds**: Must be between 1 and 300 seconds
 
 ---
 

@@ -1,0 +1,50 @@
+id: "enterprise-stack"
+name: "Enterprise AI Platform"
+version: "2.1.0"
+description: "Enterprise-grade AI platform with advanced features"
+author: "Enterprise Corp"
+containerImage: "enterprise/ai-platform:v2.1.0"
+gpu:
+  type: "A100"
+  count: 2
+  memoryGB: 80
+memory: 128
+cpu: 16
+ports:
+  - containerPort: 8080
+    exposedPort: 8080
+    protocol: "tcp"
+  - containerPort: 8443
+    exposedPort: 8443
+    protocol: "tcp"
+env:
+  - name: "LICENSE_KEY"
+    value: ""
+    required: true
+  - name: "MODEL_CACHE_SIZE"
+    value: "50GB"
+    required: false
+docs:
+  description: "Enterprise AI platform with LLM inference and fine-tuning"
+  usage: |
+    1. Set your LICENSE_KEY environment variable
+    2. Access API at http://localhost:8080
+    3. Monitor with health check at /health
+  examples:
+    - 'curl http://localhost:8080/predict -d "{"prompt": "Hello world"}"'
+logo: "https://enterprise.com/logo.png"
+docsUrl: "https://docs.enterprise.com/ai-platform"
+maintainer: "Enterprise AI Team"
+secureCloud: true
+network: "private"
+healthcheck:
+  path: "/health"
+  timeoutSeconds: 60
+tags:
+  - "ai"
+  - "enterprise"
+  - "llm"
+category: "AI/ML"
+license: "Commercial"
+homepage: "https://enterprise.com/ai-platform"
+repository: "https://github.com/enterprise/ai-platform" 

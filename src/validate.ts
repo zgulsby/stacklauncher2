@@ -1,6 +1,6 @@
-import { FileLoader } from './utils/fileLoader.js';
-import { StackSchema, validateStack } from './schema.js';
-import { Logger } from './utils/logger.js';
+import { FileLoader } from './utils/fileLoader';
+import { StackSchema, validateStack } from './schema';
+import { Logger } from './utils/logger';
 
 export async function validateCommand(options: { file: string }): Promise<void> {
   const fileResult = FileLoader.loadYaml(options.file);

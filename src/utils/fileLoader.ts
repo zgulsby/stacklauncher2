@@ -1,6 +1,6 @@
 import { readFileSync, existsSync } from 'fs';
 import { parse as parseYaml } from 'yaml';
-import { Logger } from './logger.js';
+import { Logger } from './logger';
 
 export interface FileLoadResult<T = unknown> {
   success: boolean;
